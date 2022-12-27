@@ -1,0 +1,310 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  dev                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      snappyHexMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#includeEtc "caseDicts/mesh/generation/snappyHexMeshDict.cfg"
+
+castellatedMesh true;
+snap            true;
+addLayers       false;
+
+mergeTolerance 1e-4;
+
+geometry
+{
+    fsae {
+        type triSurfaceMesh;
+        file "model.stl";
+        regions {
+            fsaeHighAxle_RL { name fsaeHighAxle_RL; }
+            fsaeHighAxle_RR { name fsaeHighAxle_RR; }
+            fsaeHighConsole { name fsaeHighConsole; }
+            fsaeHighCushion { name fsaeHighCushion; }
+            fsaeHighHelmet { name fsaeHighHelmet; }
+            fsaeHighSuspension_FL_Bottom_Arm { name fsaeHighSuspension_FL_Bottom_Arm; }
+            fsaeHighSuspension_FL_Mounts { name fsaeHighSuspension_FL_Mounts; }
+            fsaeHighSuspension_FL_Spring { name fsaeHighSuspension_FL_Spring; }
+            fsaeHighSuspension_FL_Steering_Arm { name fsaeHighSuspension_FL_Steering_Arm; }
+            fsaeHighSuspension_FL_Top_Arm { name fsaeHighSuspension_FL_Top_Arm; }
+            fsaeHighSuspension_FR_Bottom_Arm { name fsaeHighSuspension_FR_Bottom_Arm; }
+            fsaeHighSuspension_FR_Mounts { name fsaeHighSuspension_FR_Mounts; }
+            fsaeHighSuspension_FR_Spring { name fsaeHighSuspension_FR_Spring; }
+            fsaeHighSuspension_FR_Steering_Arm { name fsaeHighSuspension_FR_Steering_Arm; }
+            fsaeHighSuspension_FR_Top_Arm { name fsaeHighSuspension_FR_Top_Arm; }
+            fsaeHighSuspension_RL_Bottom_Arm { name fsaeHighSuspension_RL_Bottom_Arm; }
+            fsaeHighSuspension_RL_Pushrod { name fsaeHighSuspension_RL_Pushrod; }
+            fsaeHighSuspension_RL_Rocker { name fsaeHighSuspension_RL_Rocker; }
+            fsaeHighSuspension_RL_Spring { name fsaeHighSuspension_RL_Spring; }
+            fsaeHighSuspension_RL_Top_Arm { name fsaeHighSuspension_RL_Top_Arm; }
+            fsaeHighSuspension_RR_Bottom_Arm { name fsaeHighSuspension_RR_Bottom_Arm; }
+            fsaeHighSuspension_RR_Pushrod { name fsaeHighSuspension_RR_Pushrod; }
+            fsaeHighSuspension_RR_Rocker { name fsaeHighSuspension_RR_Rocker; }
+            fsaeHighSuspension_RR_Spring { name fsaeHighSuspension_RR_Spring; }
+            fsaeHighSuspension_RR_Top_Arm { name fsaeHighSuspension_RR_Top_Arm; }
+            fsaeHighTubular { name fsaeHighTubular; }
+            fsaeHighWheel_Tyre_FL { name fsaeHighWheel_Tyre_FL; }
+            fsaeHighWheel_Tyre_FR { name fsaeHighWheel_Tyre_FR; }
+            fsaeHighWheel_Tyre_RL { name fsaeHighWheel_Tyre_RL; }
+            fsaeHighWheel_Tyre_RR { name fsaeHighWheel_Tyre_RR; }
+            fsaeLowBrakes_RL { name fsaeLowBrakes_RL; }
+            fsaeLowBrakes_RR { name fsaeLowBrakes_RR; }
+            fsaeLowBreaker { name fsaeLowBreaker; }
+            fsaeLowCalipers_RL { name fsaeLowCalipers_RL; }
+            fsaeLowCalipers_RR { name fsaeLowCalipers_RR; }
+            fsaeLowFLBrake { name fsaeLowFLBrake; }
+            fsaeLowFRBrakes { name fsaeLowFRBrakes; }
+            fsaeLowIOPanel { name fsaeLowIOPanel; }
+            fsaeLowIOPlug0 { name fsaeLowIOPlug0; }
+            fsaeLowIOPlug1 { name fsaeLowIOPlug1; }
+            fsaeLowIOPlug2 { name fsaeLowIOPlug2; }
+            fsaeLowIOPlug3 { name fsaeLowIOPlug3; }
+            fsaeLowIOPlugs { name fsaeLowIOPlugs; }
+            fsaeLowIOScrew0 { name fsaeLowIOScrew0; }
+            fsaeLowIOScrew1 { name fsaeLowIOScrew1; }
+            fsaeLowIOScrew2 { name fsaeLowIOScrew2; }
+            fsaeLowIOScrew3 { name fsaeLowIOScrew3; }
+            fsaeLowIOScrew4 { name fsaeLowIOScrew4; }
+            fsaeLowIOScrew5 { name fsaeLowIOScrew5; }
+            fsaeLowIOScrew6 { name fsaeLowIOScrew6; }
+            fsaeLowIOScrew7 { name fsaeLowIOScrew7; }
+            fsaeLowIOSwitch0 { name fsaeLowIOSwitch0; }
+            fsaeLowIOSwitch1 { name fsaeLowIOSwitch1; }
+            fsaeLowPedalboxPanel { name fsaeLowPedalboxPanel; }
+            fsaeLowWheel_Hub_FL { name fsaeLowWheel_Hub_FL; }
+            fsaeLowWheel_Hub_FR { name fsaeLowWheel_Hub_FR; }
+            fsaeLowWheel_Hub_RL { name fsaeLowWheel_Hub_RL; }
+            fsaeLowWheel_Hub_RR { name fsaeLowWheel_Hub_RR; }
+            fsaeHighAccumulator { name fsaeHighAccumulator; }
+            fsaeMidBody { name fsaeMidBody; }
+            fsaeMidConduit0 { name fsaeMidConduit0; }
+            fsaeMidConduit1 { name fsaeMidConduit1; }
+            fsaeMidConduit2 { name fsaeMidConduit2; }
+            fsaeMidDrivetrain { name fsaeMidDrivetrain; }
+            fsaeMidKey { name fsaeMidKey; }
+            fsaeMidMotorHousing { name fsaeMidMotorHousing; }
+            fsaeMidMotorMount { name fsaeMidMotorMount; }
+            fsaeMidSeat { name fsaeMidSeat; }
+            fsaeMidSteering_Rack { name fsaeMidSteering_Rack; }
+            fsaeMidSteering_Wheel { name fsaeMidSteering_Wheel; }
+            fsaeMidTaillight_Module { name fsaeMidTaillight_Module; }
+            fsaeMidWheel_Rim_FL { name fsaeMidWheel_Rim_FL; }
+            fsaeMidWheel_Rim_FR { name fsaeMidWheel_Rim_FR; }
+            fsaeMidWheel_Rim_RL { name fsaeMidWheel_Rim_RL; }
+            fsaeMidWheel_Rim_RR { name fsaeMidWheel_Rim_RR; }
+            fsaeModBody { name fsaeModBody; }
+        }
+    }
+
+    airflow
+    {
+        type   searchableBox;
+        min    (0.1 -1 0);
+        max    (4.5 1 1.5);
+    }
+};
+
+castellatedMeshControls
+{
+    locationInMesh (-0.01 0.1 0.1);
+    nCellsBetweenLevels 1;
+    allowFreeStandingZoneFaces true;
+
+    features
+    (
+        { file "model.eMesh"; level 3; }
+    );
+
+    refinementSurfaces {
+        fsae
+        {
+            level (2 3);
+            regions {
+                "(fsaeLow).*" {
+                    level (4 5);
+                }
+
+                "(fsaeMid).*" {
+                    level (5 6);
+                }
+
+                "(fsaeHigh).*" {
+                    level (6 7);
+                }
+
+                "(fsaeMod).*" {
+                    level (6 7);
+                }
+            }
+        }
+    }
+
+    refinementRegions {
+        airflow {
+            mode inside;
+            levels ((1.0 4));
+        }
+    }
+}
+
+
+
+// Settings for the snapping.
+snapControls
+{
+    //- Number of patch smoothing iterations before finding correspondence
+    //  to surface
+    nSmoothPatch 3;
+
+    //- Relative distance for points to be attracted by surface feature point
+    //  or edge. True distance is this factor times local
+    //  maximum edge length.
+    tolerance 1.4;
+
+    //- Number of mesh displacement relaxation iterations.
+    nSolveIter 30;
+
+    //- Maximum number of snapping relaxation iterations. Should stop
+    //  before upon reaching a correct mesh.
+    nRelaxIter 5;
+
+    // Feature snapping
+
+    //- Number of feature edge snapping iterations.
+    //  Leave out altogether to disable.
+    nFeatureSnapIter 10;
+
+    //- Detect (geometric only) features by sampling the surface
+    //  (default=false).
+    implicitFeatureSnap false;
+
+    //- Use castellatedMeshControls::features (default = true)
+    explicitFeatureSnap true;
+
+    //- Detect points on multiple surfaces (only for explicitFeatureSnap)
+    multiRegionFeatureSnap false;
+}
+
+
+
+// Settings for the layer addition.
+addLayersControls
+{
+    // Are the thickness parameters below relative to the undistorted
+    // size of the refined cell outside layer (true) or absolute sizes (false).
+    relativeSizes true;
+
+    // Per final patch (so not geometry!) the layer information
+    layers
+    {
+        "(cube).*"
+        {
+            nSurfaceLayers 1;
+        }
+    }
+
+    // Expansion factor for layer mesh
+    expansionRatio 1.0;
+
+    // Wanted thickness of final added cell layer. If multiple layers
+    // is the thickness of the layer furthest away from the wall.
+    // Relative to undistorted size of cell outside layer.
+    // See relativeSizes parameter.
+    finalLayerThickness 0.3;
+
+    // Minimum thickness of cell layer. If for any reason layer
+    // cannot be above minThickness do not add layer.
+    // Relative to undistorted size of cell outside layer.
+    minThickness 0.1;
+
+    // If points get not extruded do nGrow layers of connected faces that are
+    // also not grown. This helps convergence of the layer addition process
+    // close to features.
+    // Note: changed(corrected) w.r.t 1.7.x! (didn't do anything in 1.7.x)
+    nGrow 0;
+
+    // Advanced settings
+
+    // When not to extrude surface. 0 is flat surface, 90 is when two faces
+    // are perpendicular
+    featureAngle 60;
+
+    // At non-patched sides allow mesh to slip if extrusion direction makes
+    // angle larger than slipFeatureAngle.
+    slipFeatureAngle 30;
+
+    // Maximum number of snapping relaxation iterations. Should stop
+    // before upon reaching a correct mesh.
+    nRelaxIter 3;
+
+    // Number of smoothing iterations of surface normals
+    nSmoothSurfaceNormals 1;
+
+    // Number of smoothing iterations of interior mesh movement direction
+    nSmoothNormals 3;
+
+    // Smooth layer thickness over surface patches
+    nSmoothThickness 10;
+
+    // Stop layer growth on highly warped cells
+    maxFaceThicknessRatio 0.5;
+
+    // Reduce layer growth where ratio thickness to medial
+    // distance is large
+    maxThicknessToMedialRatio 0.3;
+
+    // Angle used to pick up medial axis points
+    // Note: changed(corrected) w.r.t 1.7.x! 90 degrees corresponds to 130
+    // in 1.7.x.
+    minMedialAxisAngle 90;
+
+
+    // Create buffer region for new layer terminations
+    nBufferCellsNoExtrude 0;
+
+
+    // Overall max number of layer addition iterations. The mesher will exit
+    // if it reaches this number of iterations; possibly with an illegal
+    // mesh.
+    nLayerIter 50;
+}
+
+
+// Generic mesh quality settings. At any undoable phase these determine
+// where to undo.
+meshQualityControls
+{
+    #include "meshQualityDict"
+
+
+    // Advanced
+
+    //- Number of error distribution iterations
+    nSmoothScale 4;
+    //- Amount to scale back displacement at error points
+    errorReduction 0.75;
+}
+
+
+// Advanced
+
+// Write flags
+writeFlags
+(
+    scalarLevels
+    layerSets
+    layerFields     // write volScalarField for layer coverage
+);
+
+// ************************************************************************* //

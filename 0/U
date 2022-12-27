@@ -1,0 +1,80 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2206                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volVectorField;
+    object      U;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "include/constants"
+
+dimensions      [0 1 -1 0 0 0 0];
+
+internalField   uniform $flowVelocity;
+
+boundaryField
+{
+    #includeEtc "caseDicts/setConstraintTypes"
+
+    inlet {
+        type  fixedValue;
+        value $internalField;
+    }
+
+    outlet {
+        type            inletOutlet;
+        inletValue      uniform (0 0 0);
+        value           $internalField;
+    }
+
+    walls {
+        type            noSlip;
+    }
+
+    ground {
+        type            noSlip;
+    }
+
+    fsaeHighWheel_Tyre_FL {
+        type rotatingWallVelocity;
+        origin (0 0 0);
+        axis (0 1 0);
+        omega $wheelOmega;
+    }
+
+    fsaeHighWheel_Tyre_FR {
+        type rotatingWallVelocity;
+        origin (0 0 0);
+        axis (0 1 0);
+        omega $wheelOmega;
+    }
+
+    fsaeHighWheel_Tyre_RL {
+        type rotatingWallVelocity;
+        origin (0 0 0);
+        axis (0 1 0);
+        omega $wheelOmega;
+    }
+
+    fsaeHighWheel_Tyre_RR {
+        type rotatingWallVelocity;
+        origin (0 0 0);
+        axis (0 1 0);
+        omega $wheelOmega;
+    }
+
+    "(fsae).*"{
+        type            noSlip;
+    }
+}
+
+
+// ************************************************************************* //

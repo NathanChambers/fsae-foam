@@ -1,0 +1,18 @@
+wheelSpeedKPH     47;
+//wheelSpeedKPH       90;
+//wheelSpeedKPH     100;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+wheelSizeMM         500;
+wheelSpeedMS        #eval { $wheelSpeedKPH / 3.6 };
+wheelSpeedRPM       #eval { (60 * $wheelSpeedMS) / (3.14159265359 * ($wheelSizeMM / 1000)) };
+wheelSpeedRadS      #eval { $wheelSpeedRPM * 0.10472 };
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+flowVelocity        ($wheelSpeedMS 0 0);
+pressure            0;
+turbulentKE         0.24;
+turbulentOmega      1.78;
+wheelOmega          #eval { $wheelSpeedRadS * -1 };

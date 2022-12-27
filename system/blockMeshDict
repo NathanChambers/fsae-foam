@@ -1,0 +1,104 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  dev                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+scale 1;
+length 6;
+width 2;
+height 2;
+resolution 1;
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+xmin -1;
+xmax #eval{ $length - 1 };
+
+ymin #eval{ 0 - ($width / 2) };
+ymax #eval{ $width / 2 };
+
+zmin 0;
+zmax $height;
+
+xres #eval{ $width * $resolution };
+yres #eval{ $height * $resolution };
+zres #eval{ $length * $resolution };
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+vertices
+(
+    ($xmin $ymin $zmin)
+    ($xmin $ymax $zmin)
+    ($xmin $ymax $zmax)
+    ($xmin $ymin $zmax)
+    ($xmax $ymin $zmin)
+    ($xmax $ymax $zmin)
+    ($xmax $ymax $zmax)
+    ($xmax $ymin $zmax)
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) ($xres $yres $zres) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+            (0 1 2 3) // Inlet
+        );
+    }
+
+    outlet {
+        type patch;
+        faces (
+            (5 4 7 6) //Outlet
+        );
+    }
+
+    ground
+    {
+        type wall;
+        faces
+        (
+            (0 1 5 4) // Bottom
+        );
+    }
+         
+    walls
+    {
+        type wall;
+        faces
+        (
+            (1 2 6 5) // Front
+            (2 3 7 6) // Top
+            (0 3 7 4) // Back
+        );
+    }
+);
+
+mergePatchPairs
+(
+);
+
+// ************************************************************************* //

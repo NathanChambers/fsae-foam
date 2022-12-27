@@ -1,0 +1,12 @@
+FoamFile {
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      transportProperties;
+}
+
+// REF: https://www.engineersedge.com/physics/viscosity_of_air_dynamic_and_kinematic_14483.htm
+
+transportModel  Newtonian;
+
+nu              1.562e-05; // Air - 25c
