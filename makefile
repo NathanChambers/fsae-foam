@@ -6,6 +6,7 @@ build: clean clean-ep
 	rm -rf ./processor*; \
 	cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl; \
 	blockMesh; \
+	transformPoints -yawPitchRoll "(45 0 0)";\
 	surfaceFeatureExtract; \
 	snappyHexMesh -overwrite
 
@@ -16,6 +17,8 @@ build-par:
 	cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl; \
 	echo ===== blockMesh;\
 	blockMesh > log.blockMesh; \
+	echo ===== transformPoints;\
+	transformPoints -yawPitchRoll "(45 0 0)" > log.transformPoints;\
 	echo ===== surfaceFeatureExtract;\
 	surfaceFeatureExtract > log.surfaceFeatureExtract; \
 	echo ===== decomposePar;\

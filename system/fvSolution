@@ -16,21 +16,25 @@ FoamFile
 
 solvers
 {
-    p
-    {
+    /*
+    'p' : The pressure solver is used to solve for the pressure field in
+    a flow simulation.The pressure field is an important variable
+    in fluid dynamics because it determines the forces that act on
+    the fluid and the surrounding solid boundaries.
+    */
+    p {
         solver          GAMG;
         smoother        GaussSeidel;
         tolerance       1e-7;
         relTol          0.01;
     }
 
-    Phi
-    {
-        $p;
-    }
-
-    U
-    {
+    /*
+    'U' : The velocity solver is used to solve for the velocity field in a flow
+    simulation. The velocity field represents the speed and direction of
+    the fluid at each point in the domain.
+    */
+    U {
         solver          smoothSolver;
         smoother        GaussSeidel;
         tolerance       1e-8;
@@ -38,8 +42,23 @@ solvers
         nSweeps         1;
     }
 
-    k
-    {
+
+    /*
+    'Phi' : The volume fraction solver is used to solve for the volume fraction of a
+    dispersed phase in a two-phase flow. The volume fraction represents the
+    fraction of the total volume that is occupied by one of the phases 
+    (e.g., liquid, gas).
+    */
+    // Phi {
+    //     $p;
+    // }
+
+    /*
+    'k' : The turbulence kinetic energy solver is used to solve for the turbulence
+    kinetic energy in a turbulent flow simulation. The turbulence kinetic energy
+    represents the amount of energy associated with the turbulent motion of the fluid.
+    */
+    k {
         solver          smoothSolver;
         smoother        GaussSeidel;
         tolerance       1e-8;
@@ -47,8 +66,13 @@ solvers
         nSweeps         1;
     }
 
-    omega
-    {
+    /*
+    The turbulence dissipation rate solver is used to solve for the turbulence
+    dissipation rate in a turbulent flow simulation. The turbulence dissipation
+    rate represents the rate at which the energy of the turbulent motion is
+    dissipated or converted into heat.
+    */
+    omega {
         solver          smoothSolver;
         smoother        GaussSeidel;
         tolerance       1e-8;

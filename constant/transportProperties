@@ -7,6 +7,12 @@ FoamFile {
 
 // REF: https://www.engineersedge.com/physics/viscosity_of_air_dynamic_and_kinematic_14483.htm
 
+nu_ref 1.716e-5;
+T_ref 273;
+T 273;
+S 110.4;
+
 transportModel  Newtonian;
 
-nu              1.562e-05; // Air - 25c
+nu #eval { $nu_ref * pow(($T/$T_ref),(3/2)) * ($T_ref + $S)/($T + $S) };
+echo "The value of the variable x is: " $nu;

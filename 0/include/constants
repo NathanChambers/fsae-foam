@@ -1,4 +1,6 @@
+//wheelSpeedKPH     0.1;
 wheelSpeedKPH     47;
+//wheelSpeedKPH     60;
 //wheelSpeedKPH       90;
 //wheelSpeedKPH     100;
 
@@ -11,7 +13,11 @@ wheelSpeedRadS      #eval { $wheelSpeedRPM * 0.10472 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-flowVelocity        ($wheelSpeedMS 0 0);
+flowAngle 0;
+flowX #eval{ cos(degToRad($flowAngle)) * $wheelSpeedMS};
+flowY #eval{ sin(degToRad($flowAngle)) * $wheelSpeedMS};
+
+flowVelocity        ($flowX $flowY 0);
 pressure            0;
 turbulentKE         0.24;
 turbulentOmega      1.78;

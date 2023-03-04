@@ -16,14 +16,14 @@ FoamFile
 
 scale 1;
 length 6;
-width 2;
+width 6;
 height 2;
 resolution 1;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-xmin -1;
-xmax #eval{ $length - 1 };
+xmin #eval{ 0 - ($length / 2) };
+xmax #eval{ $length / 2 };
 
 ymin #eval{ 0 - ($width / 2) };
 ymax #eval{ $width / 2 };
@@ -66,6 +66,7 @@ boundary
         faces
         (
             (0 1 2 3) // Inlet
+            (1 2 6 5) // Front
         );
     }
 
@@ -73,6 +74,7 @@ boundary
         type patch;
         faces (
             (5 4 7 6) //Outlet
+            (0 3 7 4) // Back
         );
     }
 
@@ -90,9 +92,8 @@ boundary
         type wall;
         faces
         (
-            (1 2 6 5) // Front
+            
             (2 3 7 6) // Top
-            (0 3 7 4) // Back
         );
     }
 );

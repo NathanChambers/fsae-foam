@@ -28,11 +28,13 @@ geometry
         type triSurfaceMesh;
         file "model.stl";
         regions {
+            fsaeHighAccumulator { name fsaeHighAccumulator; }
             fsaeHighAxle_RL { name fsaeHighAxle_RL; }
             fsaeHighAxle_RR { name fsaeHighAxle_RR; }
             fsaeHighConsole { name fsaeHighConsole; }
             fsaeHighCushion { name fsaeHighCushion; }
             fsaeHighHelmet { name fsaeHighHelmet; }
+            fsaeHighPlane { name fsaeHighPlane; }
             fsaeHighSuspension_FL_Bottom_Arm { name fsaeHighSuspension_FL_Bottom_Arm; }
             fsaeHighSuspension_FL_Mounts { name fsaeHighSuspension_FL_Mounts; }
             fsaeHighSuspension_FL_Spring { name fsaeHighSuspension_FL_Spring; }
@@ -86,7 +88,6 @@ geometry
             fsaeLowWheel_Hub_FR { name fsaeLowWheel_Hub_FR; }
             fsaeLowWheel_Hub_RL { name fsaeLowWheel_Hub_RL; }
             fsaeLowWheel_Hub_RR { name fsaeLowWheel_Hub_RR; }
-            fsaeHighAccumulator { name fsaeHighAccumulator; }
             fsaeMidBody { name fsaeMidBody; }
             fsaeMidConduit0 { name fsaeMidConduit0; }
             fsaeMidConduit1 { name fsaeMidConduit1; }
@@ -103,15 +104,19 @@ geometry
             fsaeMidWheel_Rim_FR { name fsaeMidWheel_Rim_FR; }
             fsaeMidWheel_Rim_RL { name fsaeMidWheel_Rim_RL; }
             fsaeMidWheel_Rim_RR { name fsaeMidWheel_Rim_RR; }
-            fsaeModBody { name fsaeModBody; }
+            fsaeModCanopy_3 { name fsaeModCanopy_3; }
+            fsaeModChassis { name fsaeModChassis; }
+            fsaeModComp { name fsaeModComp; }
+            fsaeModSidepod { name fsaeModSidepod; }
+            fsaeModsawtooth1 { name fsaeModsawtooth1; }
         }
     }
 
     airflow
     {
         type   searchableBox;
-        min    (0.1 -1 0);
-        max    (4.5 1 1.5);
+        min    (-2 -1 0);
+        max    (2 1 1.5);
     }
 };
 
