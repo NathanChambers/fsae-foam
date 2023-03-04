@@ -1,8 +1,5 @@
-//wheelSpeedKPH     0.1;
-wheelSpeedKPH     47;
-//wheelSpeedKPH     60;
-//wheelSpeedKPH       90;
-//wheelSpeedKPH     100;
+wheelSpeedKPH 47;
+flowAngle 0;
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
@@ -13,7 +10,7 @@ wheelSpeedRadS      #eval { $wheelSpeedRPM * 0.10472 };
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-flowAngle 0;
+
 flowX #eval{ cos(degToRad($flowAngle)) * $wheelSpeedMS};
 flowY #eval{ sin(degToRad($flowAngle)) * $wheelSpeedMS};
 

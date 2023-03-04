@@ -1,15 +1,32 @@
+.PHONY: rebuild
+rebuild: clean clean-ep build-par run-par
+
+.PHONY: run
+run-foam:
+	@echo ===== decomposePar;\
+	decomposePar -force -copyZero > log.decomposePar; \
+	echo ===== simpleFoam;\
+	mpirun -n 4 simpleFoam -parallel > log.simpleFoam;\
+	echo ===== reconstructPar;\
+	reconstructPar > log.reconstructParS
+
+################################################################
+
+.PHONY: clean
+clean:
+	@rm -rf ./constant/polyMesh; \
+	rm -rf ./constant/extendedFeatureEdgeMesh; \
+	rm -rf ./constant/cube.eMesh;
+
+.PHONY: clean-ep
+clean-ep:
+	@ls | grep -P "(?=[^0])(?=[0-9]+)" | xargs -d "\n" rm -drf
+
+.PHONY: render
 render:
 	@cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl
 
-build: clean clean-ep
-	@rm -rf ./log.*; \
-	rm -rf ./processor*; \
-	cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl; \
-	blockMesh; \
-	transformPoints -yawPitchRoll "(45 0 0)";\
-	surfaceFeatureExtract; \
-	snappyHexMesh -overwrite
-
+.PHONY: build-par
 build-par:
 	@rm -rf ./log.*; \
 	rm -rf ./processor*; \
@@ -28,22 +45,6 @@ build-par:
 	echo ===== reconstructParMesh;\
 	reconstructParMesh -constant > log.reconstructParMesh
 
-clean:
-	@rm -rf ./constant/polyMesh; \
-	rm -rf ./constant/extendedFeatureEdgeMesh; \
-	rm -rf ./constant/cube.eMesh;
-
-clean-ep:
-	@ls | grep -P "(?=[^0])(?=[0-9]+)" | xargs -d "\n" rm -drf
-
-rebuild: clean clean-ep build run
-
-rebuild-par: clean clean-ep build-par run-par
-
-.PHONY: run
-run:
-	@simpleFoam
-
 .PHONY: run-par
 run-par:
 	@echo ===== simpleFoam;\
@@ -51,17 +52,3 @@ run-par:
 	echo ===== reconstructPar;\
 	reconstructPar > log.reconstructPar
 
-save:
-	@ep=${shell date +"%s"}; \
-	fileName=results/$$ep; \
-	echo mkdir -p $$fileName; \
-	ls | grep -P "[0-9]+" | xargs -d "\n" echo cp -rd
-
-.PHONY: rerun
-rerun:
-	@echo ===== decomposePar;\
-	decomposePar -force -copyZero > log.decomposePar; \
-	echo ===== simpleFoam;\
-	mpirun -n 4 simpleFoam -parallel > log.simpleFoam;\
-	echo ===== reconstructPar;\
-	reconstructPar > log.reconstructParS
