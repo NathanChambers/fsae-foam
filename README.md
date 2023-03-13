@@ -1,5 +1,5 @@
 # Requirements
-* Make
+* Make (Windows: https://www.gnu.org/software/make/#download)
 * OpenFOAM https://openfoam.org
 * Paraview https://www.paraview.org/
 
