@@ -104,11 +104,11 @@ geometry
             fsaeMidWheel_Rim_FR { name fsaeMidWheel_Rim_FR; }
             fsaeMidWheel_Rim_RL { name fsaeMidWheel_Rim_RL; }
             fsaeMidWheel_Rim_RR { name fsaeMidWheel_Rim_RR; }
-            fsaeModCanopy_3 { name fsaeModCanopy_3; }
             fsaeModChassis { name fsaeModChassis; }
-            fsaeModComp { name fsaeModComp; }
-            fsaeModSidepod { name fsaeModSidepod; }
-            fsaeModsawtooth1 { name fsaeModsawtooth1; }
+            fsaeModDefault_Floorpan__UTSME22_ { name fsaeModDefault_Floorpan__UTSME22_; }
+            fsaeModUTSME22_Sidepod { name fsaeModUTSME22_Sidepod; }
+            fsaeModaero1 { name fsaeModaero1; }
+            fsaeModaero1_001 { name fsaeModaero1_001; }
         }
     }
 

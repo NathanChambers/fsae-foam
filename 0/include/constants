@@ -1,21 +1,48 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2206                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+/* Speed of the wheel in kilometers per hour */
 wheelSpeedKPH 47;
-flowAngle 0;
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+/* Angle of the incoming flow in degrees */
+flowAngle 5;
 
-wheelSizeMM         500;
-wheelSpeedMS        #eval { $wheelSpeedKPH / 3.6 };
-wheelSpeedRPM       #eval { (60 * $wheelSpeedMS) / (3.14159265359 * ($wheelSizeMM / 1000)) };
-wheelSpeedRadS      #eval { $wheelSpeedRPM * 0.10472 };
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+/* Size of the wheel in millimeters */
+wheelSizeMM 500;
 
+/* Wheel speed in meters per second based on the wheel speed in kilometers per hour */
+wheelSpeedMS #eval { $wheelSpeedKPH / 3.6 };
 
+/* Wheel speed in revolutions per minute based on the wheel speed in meters per second and the wheel size in millimeters */
+wheelSpeedRPM #eval { (60 * $wheelSpeedMS) / (3.14159265359 * ($wheelSizeMM / 1000)) };
+
+/* Wheel speed in radians per second based on the wheel speed in revolutions per minute */
+wheelSpeedRadS #eval { $wheelSpeedRPM * 0.10472 };
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* X and Y components of the flow velocity based on the angle of the incoming flow and the speed of the wheel */
 flowX #eval{ cos(degToRad($flowAngle)) * $wheelSpeedMS};
 flowY #eval{ sin(degToRad($flowAngle)) * $wheelSpeedMS};
 
-flowVelocity        ($flowX $flowY 0);
-pressure            0;
-turbulentKE         0.24;
-turbulentOmega      1.78;
-wheelOmega          #eval { $wheelSpeedRadS * -1 };
+/* Velocity of the flow based on the x and y components calculated above */
+flowVelocity ($flowX $flowY 0);
+
+/* Flow pressure to zero */
+pressure 0;
+
+/* Turbulent kinetic energy */
+turbulentKE 0.24;
+
+/* Specific dissipation rate of turbulent kinetic energy */
+turbulentOmega 1.78;
+
+/* Angular velocity of the wheel based on the wheel speed in radians per second */
+wheelOmega #eval { $wheelSpeedRadS * -1 };

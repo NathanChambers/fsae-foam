@@ -30,7 +30,7 @@ writeControl    timeStep;
 
 writeInterval   5;
 
-purgeWrite      0;
+purgeWrite      5;
 
 writeFormat     binary;
 
