@@ -35,6 +35,7 @@ geometry
             fsaeHighCushion { name fsaeHighCushion; }
             fsaeHighHelmet { name fsaeHighHelmet; }
             fsaeHighPlane { name fsaeHighPlane; }
+            fsaeHighPlane_001 { name fsaeHighPlane_001; }
             fsaeHighSuspension_FL_Bottom_Arm { name fsaeHighSuspension_FL_Bottom_Arm; }
             fsaeHighSuspension_FL_Mounts { name fsaeHighSuspension_FL_Mounts; }
             fsaeHighSuspension_FL_Spring { name fsaeHighSuspension_FL_Spring; }
@@ -105,10 +106,8 @@ geometry
             fsaeMidWheel_Rim_RL { name fsaeMidWheel_Rim_RL; }
             fsaeMidWheel_Rim_RR { name fsaeMidWheel_Rim_RR; }
             fsaeModChassis { name fsaeModChassis; }
-            fsaeModDefault_Floorpan__UTSME22_ { name fsaeModDefault_Floorpan__UTSME22_; }
-            fsaeModUTSME22_Sidepod { name fsaeModUTSME22_Sidepod; }
-            fsaeModaero1 { name fsaeModaero1; }
-            fsaeModaero1_001 { name fsaeModaero1_001; }
+            fsaeModComp { name fsaeModComp; }
+            fsaeModSidepod { name fsaeModSidepod; }
         }
     }
 

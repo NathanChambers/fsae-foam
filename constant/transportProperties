@@ -7,12 +7,20 @@ FoamFile {
 
 // REF: https://www.engineersedge.com/physics/viscosity_of_air_dynamic_and_kinematic_14483.htm
 
+// Reference dynamic viscosity of air at standard conditions (P = 101325 Pa, T = 273.15 K)
 nu_ref 1.716e-5;
+
+// Reference temperature for dynamic viscosity
 T_ref 273;
+
+// Temperature for dynamic viscosity (set to reference temperature for incompressible flow assumption)
 T 273;
+
+// Sutherland's law constant for air (S = 110.4 K)
 S 110.4;
 
+// Specify the transport model to be used (Newtonian for constant viscosity)
 transportModel  Newtonian;
 
+// Calculate dynamic viscosity using Sutherland's law
 nu #eval { $nu_ref * pow(($T/$T_ref),(3/2)) * ($T_ref + $S)/($T + $S) };
-echo "The value of the variable x is: " $nu;

@@ -10,7 +10,7 @@
 wheelSpeedKPH 47;
 
 /* Angle of the incoming flow in degrees */
-flowAngle 5;
+flowAngle 0;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
