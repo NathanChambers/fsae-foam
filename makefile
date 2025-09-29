@@ -1,54 +1,24 @@
-.PHONY: rebuild
-rebuild: clean clean-ep build-par run-par
+FOAM_VERSION ?= 2206
+FOAM_IMAGE = opencfd/openfoam-run:$(FOAM_VERSION)
+FOAM_CMD = docker run --rm -it -v "$$(pwd -W)":/root $(FOAM_IMAGE)
 
-.PHONY: run
-run-foam:
-	@echo ===== decomposePar;\
-	decomposePar -force -copyZero > log.decomposePar; \
-	echo ===== simpleFoam;\
-	mpirun -n 4 simpleFoam -parallel > log.simpleFoam;\
-	echo ===== reconstructPar;\
-	reconstructPar > log.reconstructParS
+cli:
+	$(FOAM_CMD) bash
 
-################################################################
+build-mesh:
+	$(FOAM_CMD) ./scripts/build-mesh.sh
 
-.PHONY: clean
+build-mesh-par:
+	$(FOAM_CMD) ./scripts/build-mesh-par.sh
+
+run-sim:
+	$(FOAM_CMD) ./scripts/run-sim.sh
+
+run-sim-par:
+	$(FOAM_CMD) ./scripts/run-sim-par.sh
+
 clean:
-	@rm -rf ./constant/polyMesh; \
-	rm -rf ./constant/extendedFeatureEdgeMesh; \
-	rm -rf ./constant/cube.eMesh;
+	./scripts/clean.sh
 
-.PHONY: clean-ep
 clean-ep:
-	@ls | grep -P "(?=[^0])(?=[0-9]+)" | xargs -d "\n" rm -drf
-
-.PHONY: render
-render:
-	@cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl
-
-.PHONY: build-par
-build-par:
-	@rm -rf ./log.*; \
-	rm -rf ./processor*; \
-	echo ===== combine stl;\
-	cat constant/triSurface/fsae*.stl > constant/triSurface/model.stl; \
-	echo ===== blockMesh;\
-	blockMesh > log.blockMesh; \
-	echo ===== transformPoints;\
-	transformPoints -yawPitchRoll "(45 0 0)" > log.transformPoints;\
-	echo ===== surfaceFeatureExtract;\
-	surfaceFeatureExtract > log.surfaceFeatureExtract; \
-	echo ===== decomposePar;\
-	decomposePar -force -copyZero > log.decomposePar; \
-	echo ===== snappyHexMesh;\
-	mpirun -n 4 snappyHexMesh -overwrite -parallel > log.snappyHexMesh; \
-	echo ===== reconstructParMesh;\
-	reconstructParMesh -constant > log.reconstructParMesh
-
-.PHONY: run-par
-run-par:
-	@echo ===== simpleFoam;\
-	mpirun -n 4 simpleFoam -parallel > log.simpleFoam;\
-	echo ===== reconstructPar;\
-	reconstructPar > log.reconstructPar
-
+	./scripts/clean-ep.sh

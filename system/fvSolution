@@ -1,10 +1,3 @@
-/*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
-\*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
@@ -12,93 +5,99 @@ FoamFile
     class       dictionary;
     object      fvSolution;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// -------------------------------------------------------------------------
+// User-adjustable controls (flat, no nesting)
+// -------------------------------------------------------------------------
+
+
+// --- Solver tolerances (smaller = more accurate, larger = faster/looser)
+pTol        1e-7;   // pressure solver tolerance
+UTol        1e-8;   // velocity solver tolerance
+kTol        1e-8;   // turbulence kinetic energy tolerance
+omegaTol    1e-8;   // specific dissipation rate tolerance
+
+// --- Relaxation factors (lower = more stable, higher = faster convergence riskier)
+pRelax      0.3;    // pressure relaxation factor
+URelax      0.7;    // velocity relaxation factor
+kRelax      0.7;    // turbulence k relaxation factor
+omegaRelax  0.7;    // turbulence omega relaxation factor
+
+// --- Residual targets (stopping/convergence criteria)
+pTarget     1e-4;   // pressure residual target
+UTarget     1e-5;   // velocity residual target
+kTarget     1e-5;   // k residual target
+omegaTarget 1e-5;   // omega residual target
+
+// -------------------------------------------------------------------------
+// Solvers
+// -------------------------------------------------------------------------
 
 solvers
 {
-    /*
-    'p' : The pressure solver is used to solve for the pressure field in
-    a flow simulation.The pressure field is an important variable
-    in fluid dynamics because it determines the forces that act on
-    the fluid and the surrounding solid boundaries.
-    */
-    p {
+    p
+    {
         solver          GAMG;
         smoother        GaussSeidel;
-        tolerance       1e-7;
+        tolerance       $pTol;
         relTol          0.01;
     }
 
-    /*
-    'U' : The velocity solver is used to solve for the velocity field in a flow
-    simulation. The velocity field represents the speed and direction of
-    the fluid at each point in the domain.
-    */
-    U {
+    U
+    {
         solver          smoothSolver;
-        smoother        GaussSeidel;
-        tolerance       1e-8;
+        smoother        symGaussSeidel;
+        tolerance       $UTol;
         relTol          0.1;
-        nSweeps         1;
     }
 
-
-    /*
-    'Phi' : The volume fraction solver is used to solve for the volume fraction of a
-    dispersed phase in a two-phase flow. The volume fraction represents the
-    fraction of the total volume that is occupied by one of the phases 
-    (e.g., liquid, gas).
-    */
-    // Phi {
-    //     $p;
-    // }
-
-    /*
-    'k' : The turbulence kinetic energy solver is used to solve for the turbulence
-    kinetic energy in a turbulent flow simulation. The turbulence kinetic energy
-    represents the amount of energy associated with the turbulent motion of the fluid.
-    */
-    k {
+    k
+    {
         solver          smoothSolver;
-        smoother        GaussSeidel;
-        tolerance       1e-8;
+        smoother        symGaussSeidel;
+        tolerance       $kTol;
         relTol          0.1;
-        nSweeps         1;
     }
 
-    /*
-    The turbulence dissipation rate solver is used to solve for the turbulence
-    dissipation rate in a turbulent flow simulation. The turbulence dissipation
-    rate represents the rate at which the energy of the turbulent motion is
-    dissipated or converted into heat.
-    */
-    omega {
+    omega
+    {
         solver          smoothSolver;
-        smoother        GaussSeidel;
-        tolerance       1e-8;
+        smoother        symGaussSeidel;
+        tolerance       $omegaTol;
         relTol          0.1;
-        nSweeps         1;
     }
 }
+
+// -------------------------------------------------------------------------
+// SIMPLE controls
+// -------------------------------------------------------------------------
 
 SIMPLE
 {
     nNonOrthogonalCorrectors 0;
     consistent yes;
-}
 
-potentialFlow
-{
-    nNonOrthogonalCorrectors 10;
+    residualControl
+    {
+        p           $pTarget;
+        U           $UTarget;
+        k           $kTarget;
+        omega       $omegaTarget;
+    }
 }
 
 relaxationFactors
 {
+    fields
+    {
+        p       $pRelax;
+    }
+
     equations
     {
-        U               0.9;
-        k               0.7;
-        omega           0.7;
+        U       $URelax;
+        k       $kRelax;
+        omega   $omegaRelax;
     }
 }
 
@@ -106,6 +105,3 @@ cache
 {
     grad(U);
 }
-
-
-// ************************************************************************* //

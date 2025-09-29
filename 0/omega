@@ -1,10 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|   OpenFOAM specific dissipation rate field (omega)                          |
 \*---------------------------------------------------------------------------*/
+
 FoamFile
 {
     version     2.0;
@@ -12,7 +9,6 @@ FoamFile
     class       volScalarField;
     object      omega;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "include/constants"
 
@@ -24,32 +20,34 @@ boundaryField
 {
     #includeEtc "caseDicts/setConstraintTypes"
 
-    inlet {
-        type  fixedValue;
-        value $internalField;
+    inlet
+    {
+        type    fixedValue;
+        value   uniform $turbulentOmega;   // Set turbulence level at inlet
     }
 
-    outlet {
-        type            inletOutlet;
-        inletValue      $internalField;
-        value           $internalField;
+    outlet
+    {
+        type        inletOutlet;           // Outflow with fallback
+        inletValue  uniform $turbulentOmega;
+        value       uniform $turbulentOmega;
     }
 
-    ground {
-        type            omegaWallFunction;
-        value           $internalField;
+    ground
+    {
+        type    omegaWallFunction;
+        value   uniform $turbulentOmega;   // Dummy initial value
     }
 
-    walls {
-        type            omegaWallFunction;
-        value           $internalField;
+    walls
+    {
+        type    omegaWallFunction;
+        value   uniform $turbulentOmega;
     }
 
-    "(fsae).*" {
-        type            omegaWallFunction;
-        value           $internalField;
+    "(fsae).*"
+    {
+        type    omegaWallFunction;
+        value   uniform $turbulentOmega;
     }
 }
-
-
-// ************************************************************************* //

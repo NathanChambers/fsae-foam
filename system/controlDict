@@ -1,10 +1,3 @@
-/*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
-\*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
@@ -12,37 +5,50 @@ FoamFile
     class       dictionary;
     object      controlDict;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
+// Solver
 application     simpleFoam;
 
+// Time control
 startFrom       startTime;
-
 startTime       0;
 
 stopAt          endTime;
+endTime         200;          // Run longer, adjust based on convergence
 
-endTime         120;
-
-deltaT          1;
+deltaT          1;             // Iteration counter, not physical
 
 writeControl    timeStep;
+writeInterval   50;           // Save every 200 iterations
 
-writeInterval   5;
-
-purgeWrite      5;
-
+purgeWrite      0;
 writeFormat     binary;
-
 writePrecision  6;
-
 writeCompression off;
 
 timeFormat      general;
-
 timePrecision   6;
 
 runTimeModifiable true;
 
+// ------------------- Function objects -------------------
+functions
+{
+    forceCoeffs
+    {
+        type            forceCoeffs;
+        libs            ("libforces.so");
+        writeControl    timeStep;
+        writeInterval   10;         // Write Cd every 10 iterations
 
-// ************************************************************************* //
+        patches         ("fsae");   // <-- change to your body patch name
+        rho             rhoInf;
+        rhoInf          1.2;        // Air density [kg/m3]
+        liftDir         (0 0 1);    // z-direction
+        dragDir         (1 0 0);    // x-direction (assuming flow in +X)
+        CofR            (0 0 0);    // Centre of rotation, usually origin
+        magUInf         40;         // Freestream speed [m/s]
+        lRef            1;          // Reference length (wheelbase/height)
+        Aref            0.112;      // Reference frontal area [m^2]
+    }
+}

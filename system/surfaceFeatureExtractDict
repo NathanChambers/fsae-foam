@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-model.stl {
+fsaeMesh.stl {
     extractionMethod extractFromSurface;
 
     extractFromSurfaceCoeffs {

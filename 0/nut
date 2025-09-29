@@ -1,10 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|   OpenFOAM turbulent kinematic viscosity field (nut)                        |
 \*---------------------------------------------------------------------------*/
+
 FoamFile
 {
     version     2.0;
@@ -12,7 +9,6 @@ FoamFile
     class       volScalarField;
     object      nut;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 dimensions      [0 2 -1 0 0 0 0];
 
@@ -22,38 +18,42 @@ boundaryField
 {
     #includeEtc "caseDicts/setConstraintTypes"
 
-    inlet {
-        type            calculated;
-        value           uniform 0;
+    inlet
+    {
+        type    calculated;
+        value   uniform 0;
     }
 
-    outlet {
-        type            calculated;
-        value           uniform 0;
+    outlet
+    {
+        type    calculated;
+        value   uniform 0;
     }
 
-    ground {
-        type            nutkWallFunction;
-        value           uniform 0;
+    ground
+    {
+        type    nutkWallFunction;   // Smooth wall treatment
+        value   uniform 0;
     }
 
-    walls {
-        type            nutkWallFunction;
-        value           uniform 0;
+    walls
+    {
+        type    nutkWallFunction;
+        value   uniform 0;
     }
 
+    // Tyres as rough walls (optional):
     // "(fsaeHighWheel_Tyre).*"
     // {
-    //     type            nutkRoughWallFunction;
-    //     Ks uniform 0;
-    //     Cs uniform 0.5;
+    //     type    nutkRoughWallFunction;
+    //     Ks      uniform 0;   // Roughness height (m)
+    //     Cs      uniform 0.5; // Empirical constant
+    //     value   uniform 0;
     // }
 
-    "(fsae).*" {
-        type            nutkWallFunction;
-        value           uniform 0;
+    "(fsae).*"
+    {
+        type    nutkWallFunction;
+        value   uniform 0;
     }
 }
-
-
-// ************************************************************************* //

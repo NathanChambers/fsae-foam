@@ -1,48 +1,53 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|   OpenFOAM case constants (parametric setup)                               |
+|   Used by boundary condition files via #include                            |
 \*---------------------------------------------------------------------------*/
 
-/* Speed of the wheel in kilometers per hour */
-wheelSpeedKPH 47;
+// -------------------------------------------------------------------------
+// User inputs (tweak these per case)
+// -------------------------------------------------------------------------
 
-/* Angle of the incoming flow in degrees */
-flowAngle 0;
+// Freestream / wheel speed
+flowSpeedKPH    40;       // vehicle/wind speed [km/h]
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// Flow angle (yaw)
+flowAngle       0;         // [deg] 0 = aligned with x-axis
 
-/* Size of the wheel in millimeters */
-wheelSizeMM 500;
+// Wheel size
+wheelSizeMM     500;       // diameter of wheel [mm]
 
-/* Wheel speed in meters per second based on the wheel speed in kilometers per hour */
-wheelSpeedMS #eval { $wheelSpeedKPH / 3.6 };
+// Turbulence properties
+turbulenceIntensity 0.01;  // 1% typical wind tunnel turbulence
+turbLengthScale    0.07;   // [m] length scale ~ body height for Ahmed
 
-/* Wheel speed in revolutions per minute based on the wheel speed in meters per second and the wheel size in millimeters */
-wheelSpeedRPM #eval { (60 * $wheelSpeedMS) / (3.14159265359 * ($wheelSizeMM / 1000)) };
+// -------------------------------------------------------------------------
+// Derived values (computed automatically)
+// -------------------------------------------------------------------------
 
-/* Wheel speed in radians per second based on the wheel speed in revolutions per minute */
-wheelSpeedRadS #eval { $wheelSpeedRPM * 0.10472 };
+// Flow velocity in m/s
+flowSpeedMS     #eval "$flowSpeedKPH / 3.6";
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+// Wheel speed (linear → rpm → rad/s)
+wheelSpeedRPM   #eval "(60 * $flowSpeedMS) / (3.14159265359 * ($wheelSizeMM / 1000))";
+wheelSpeedRadS  #eval "$wheelSpeedRPM * 0.10472";   // 2π/60 ≈ 0.10472
 
-/* X and Y components of the flow velocity based on the angle of the incoming flow and the speed of the wheel */
-flowX #eval{ cos(degToRad($flowAngle)) * $wheelSpeedMS};
-flowY #eval{ sin(degToRad($flowAngle)) * $wheelSpeedMS};
+// Wheel angular velocity (negative ensures correct forward rotation for axis (0 1 0))
+wheelOmega      #eval "$wheelSpeedRadS * -1";
 
-/* Velocity of the flow based on the x and y components calculated above */
-flowVelocity ($flowX $flowY 0);
+// Flow components
+flowX           #eval "cos(degToRad($flowAngle)) * $flowSpeedMS";
+flowY           #eval "sin(degToRad($flowAngle)) * $flowSpeedMS";
+flowVelocity    ($flowX $flowY 0);
 
-/* Flow pressure to zero */
-pressure 0;
+// -------------------------------------------------------------------------
+// Turbulence derived values
+// -------------------------------------------------------------------------
 
-/* Turbulent kinetic energy */
-turbulentKE 0.24;
+// Turbulent kinetic energy: k = 1.5*(U*I)^2
+turbulentKE     #eval "1.5 * pow(($flowSpeedMS * $turbulenceIntensity), 2)";
 
-/* Specific dissipation rate of turbulent kinetic energy */
-turbulentOmega 1.78;
+// Specific dissipation rate: ω = sqrt(k) / (Cmu^0.25 * Lt), Cmu=0.09
+turbulentOmega  #eval "sqrt($turbulentKE) / (pow(0.09,0.25) * $turbLengthScale)";
 
-/* Angular velocity of the wheel based on the wheel speed in radians per second */
-wheelOmega #eval { $wheelSpeedRadS * -1 };
+// Reference pressure
+pressure        0;

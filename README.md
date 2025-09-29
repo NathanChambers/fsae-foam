@@ -1,38 +1,92 @@
 # Requirements
-* Make (Windows: https://www.gnu.org/software/make/#download)
-* OpenFOAM https://openfoam.org
-* Paraview https://www.paraview.org/
+
+- **OpenFOAM (ESI/OpenCFD version, not the Foundation build)**
+  - Tested with: `OpenFOAM-v2206`
+  - Docker image: `opencfd/openfoam-run:2206`
+- Paraview https://www.paraview.org/
 
 # Meshing
-Export stl files into [Path] `constant/triSurface` from modeling software (blender, solid works, etc). The files have to have one of the following prefix;
-* fsaeLow
-* fsaeMid
-* fsaeHigh
-* fsaeMod
 
-eg. `fsaeHighHelmet.stl`, `fsaeModSidepod.stl`
+All STL files must be exported into `constant/triSurface` from your modeling software (Blender, SolidWorks, etc).
 
-Each prefix determins the level of detail for the meshing stage. The high/mod have the highest level of subdivision/accuracy
+## Naming rules
 
-For the sim to account for rotating wheels, the tyre mesh should match the following names;
-* fsaeHighWheel_Tyre_FL
-* fsaeHighWheel_Tyre_FR
-* fsaeHighWheel_Tyre_RL
-* fsaeHighWheel_Tyre_RR
+Every STL must have an `fsae` prefix so the `0/` configuration files can identify the geometry as part of the car.
 
-# CDF Parameter Files
-* [Path] `0/include/constants`
-    * `wheelSpeedKPH` - Set wheel rotation speed and flow velocity
-    * `flowAngle` - Sets flow angle from center line
+Examples:
+
+- `fsaeHighHelmet.stl`
+- `fsaeBody.stl`
+
+For the sim to account for rotating wheels, the tyre mesh should match the following names:
+
+- `fsaeTyreFL`
+- `fsaeTyreFR`
+- `fsaeTyreRL`
+- `fsaeTyreRR`
+
+## Mesh registration
+
+Any STL placed in `constant/triSurface` must also be declared in:
+
+- [Path] `system/snappyHexMeshDict` → `geometry` block and corresponding refinement settings
+- [Path] `system/surfaceFeatureExtractDict` → to generate feature edges
+
+## Orientation
+
+Airflow is defined along the **X+ axis**.
+The front of the car model must therefore face the **X− direction** when exported to STL.
+
+# CFD Parameter Files
+
+- [Path] `0/include/constants`
+
+  - `wheelSpeedKPH` → set wheel rotation speed and flow velocity
+  - `flowAngle` → set flow angle from center line
+
+- [Path] `system/controlDict`
+  - general solver controls (timestep, write interval, etc.)
 
 # Run
-1. Place *.stl files into [Path] `constant/triSurface`
-2. Update [Path] `system/snappyHexMeshDict` [File Contents] `geometry.fsae.regions` to match stl files
-    * Running rebuild will generate a list of all components if there is a mismatch
-3. Open a terminal and navigate to the fsae-foam project folder
-4. Run `make rebuild`
-    * This will generate the mesh and run the simulation
-5. Open the `view.foam` in Paraview
-6. (Optional) Run `make run-foam` 
-    * Runs with CFD with different any updated parameters without having to regenerate the mesh
 
+The workflow depends on whether you are adding/changing geometry or only updating simulation parameters.
+
+## Full rebuild (required when meshes change)
+
+1. Place \*.stl files into [Path] `constant/triSurface`.
+2. Update `system/snappyHexMeshDict` and `system/surfaceFeatureExtractDict` to include the new STL files.
+3. Open a terminal and navigate to the `fsae-foam` project folder.
+4. Run the full meshing and simulation sequence:
+
+```bash
+# generate initial background volume
+blockMesh
+
+# rotate domain to allow airflow angle variation
+transformPoints -yawPitchRoll "(45 0 0)"
+
+# extract feature edges from STL surfaces
+surfaceFeatureExtract
+
+# mesh vehicle geometry into the volume
+snappyHexMesh -overwrite
+
+# run the CFD simulation
+simpleFoam
+```
+
+5. Open the generated `view.foam` in ParaView.
+
+## Parameter-only changes (no new geometry)
+
+1. Update values in [Path] `0/include/constants`
+
+- `wheelSpeedKPH`
+- `flowAngle`
+
+2. Optionally update `system/controlDict` for solver settings.
+3. Rerun only:
+
+```bash
+simpleFoam
+```

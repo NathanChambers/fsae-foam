@@ -1,10 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|   OpenFOAM velocity boundary conditions                                    |
 \*---------------------------------------------------------------------------*/
+
 FoamFile
 {
     version     2.0;
@@ -12,7 +9,6 @@ FoamFile
     class       volVectorField;
     object      U;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "include/constants"
 
@@ -24,57 +20,61 @@ boundaryField
 {
     #includeEtc "caseDicts/setConstraintTypes"
 
-    inlet {
+    inlet
+    {
         type  fixedValue;
-        value $internalField;
+        value uniform $flowVelocity;       // freestream
     }
 
-    outlet {
-        type            inletOutlet;
-        inletValue      uniform (0 0 0);
-        value           $internalField;
+    outlet
+    {
+        type  zeroGradient;
     }
 
-    walls {
-        type            noSlip;
+    ground
+    {
+        type  movingWallVelocity;  // Rolling road condition
+        value uniform $flowVelocity;       // matches freestream
     }
 
-    ground {
-        type            noSlip;
+    walls
+    {
+        type  slip;              // Car body (non-tyre parts)
     }
 
-    fsaeHighWheel_Tyre_FL {
-        type rotatingWallVelocity;
-        origin (0 0 0);
-        axis (0 1 0);
-        omega $wheelOmega;
-    }
+    // Rotating tyres (using parametric angular velocity)
+    // fsaeTyreFL
+    // {
+    //     type    rotatingWallVelocity;
+    //     origin  (0 0 0);
+    //     axis    (0 1 0);
+    //     omega   $wheelOmega;
+    // }
+    // fsaeTyreFR
+    // {
+    //     type    rotatingWallVelocity;
+    //     origin  (0 0 0);
+    //     axis    (0 1 0);
+    //     omega   $wheelOmega;
+    // }
+    // fsaeTyreRL
+    // {
+    //     type    rotatingWallVelocity;
+    //     origin  (0 0 0);
+    //     axis    (0 1 0);
+    //     omega   $wheelOmega;
+    // }
+    // fsaeTyreRR
+    // {
+    //     type    rotatingWallVelocity;
+    //     origin  (0 0 0);
+    //     axis    (0 1 0);
+    //     omega   $wheelOmega;
+    // }
 
-    fsaeHighWheel_Tyre_FR {
-        type rotatingWallVelocity;
-        origin (0 0 0);
-        axis (0 1 0);
-        omega $wheelOmega;
-    }
-
-    fsaeHighWheel_Tyre_RL {
-        type rotatingWallVelocity;
-        origin (0 0 0);
-        axis (0 1 0);
-        omega $wheelOmega;
-    }
-
-    fsaeHighWheel_Tyre_RR {
-        type rotatingWallVelocity;
-        origin (0 0 0);
-        axis (0 1 0);
-        omega $wheelOmega;
-    }
-
-    "(fsae).*"{
-        type            noSlip;
+    // Catch-all: any patch starting with "fsae" → noSlip
+    "(fsae).*"
+    {
+        type  noSlip;
     }
 }
-
-
-// ************************************************************************* //

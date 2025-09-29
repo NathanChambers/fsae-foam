@@ -1,10 +1,7 @@
 /*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2206                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
+|   OpenFOAM turbulence kinetic energy field (k)                              |
 \*---------------------------------------------------------------------------*/
+
 FoamFile
 {
     version     2.0;
@@ -12,7 +9,6 @@ FoamFile
     class       volScalarField;
     object      k;
 }
-// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
 #include "include/constants"
 
@@ -24,32 +20,34 @@ boundaryField
 {
     #includeEtc "caseDicts/setConstraintTypes"
 
-    inlet {
-        type  fixedValue;
-        value $internalField;
+    inlet
+    {
+        type    fixedValue;              // Specify turbulence at inlet
+        value   uniform $turbulentKE;
     }
 
-    outlet {
-        type            inletOutlet;
-        inletValue      $internalField;
-        value           $internalField;
+    outlet
+    {
+        type    inletOutlet;             // Allows backflow with turbulence
+        inletValue uniform $turbulentKE;
+        value       uniform $turbulentKE;
     }
 
-    ground {
-        type            kqRWallFunction;
-        value           $internalField;
+    ground
+    {
+        type    kqRWallFunction;         // Wall treatment for turbulence k
+        value   uniform $turbulentKE;
     }
 
-    walls {
-        type            kqRWallFunction;
-        value           $internalField;
+    walls
+    {
+        type    kqRWallFunction;
+        value   uniform $turbulentKE;
     }
 
-    "(fsae).*" {
-        type            kqRWallFunction;
-        value           $internalField;
+    "(fsae).*"
+    {
+        type    kqRWallFunction;
+        value   uniform $turbulentKE;
     }
 }
-
-
-// ************************************************************************* //
