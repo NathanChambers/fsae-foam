@@ -1,4 +1,4 @@
-FOAM_VERSION ?= 2206
+FOAM_VERSION ?= 2506
 FOAM_IMAGE = opencfd/openfoam-run:$(FOAM_VERSION)
 FOAM_CMD = docker run --rm -it -v "$$(pwd -W)":/root $(FOAM_IMAGE)
 

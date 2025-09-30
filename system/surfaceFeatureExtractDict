@@ -14,7 +14,8 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-fsaeMesh.stl {
+fsae {
+    surfaces ("fsae.*.stl");
     extractionMethod extractFromSurface;
 
     extractFromSurfaceCoeffs {

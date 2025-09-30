@@ -50,7 +50,7 @@ castellatedMeshControls
 
     features
     (
-        { file "fsaeMesh.eMesh"; level 1; }
+        { file "fsae.eMesh"; level 1; }
     );
 
     refinementSurfaces {
